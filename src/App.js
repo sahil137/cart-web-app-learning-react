@@ -41,6 +41,7 @@ class App extends React.Component {
       console.log(snapshot);
       snapshot.docs.map((doc) => {
         console.log(doc.data);
+        return "";
       });
 
       const products = snapshot.docs.map((doc) => {
@@ -61,11 +62,21 @@ class App extends React.Component {
       const {products} = this.state;
       const index = products.indexOf(product);
 
-      products[index].qty += 1;
+      // products[index].qty += 1;
 
-      this.setState({
-          // products: products
-          products
+      // this.setState({
+      //     products
+      // })
+      const docRef = this.db.collection('products').doc(products[index].id);
+      docRef
+      .update({
+        qty: products[index].qty + 1
+      })
+      .then(() => {
+        console.log('Document updated successfully');
+      })
+      .catch((err) => {
+        console.log("error", err);
       })
   }
   handleDecreaseQuantity = (product) => {

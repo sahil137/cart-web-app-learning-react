@@ -87,21 +87,44 @@ class App extends React.Component {
           return;
       }
 
-      products[index].qty -= 1;
+      // products[index].qty -= 1;
 
-      this.setState({
-          products
+      // this.setState({
+      //     products
+      // })
+
+      const docRef = this.db.collection('products').doc(products[index].id);
+      docRef
+      .update({
+        qty: products[index].qty -   1
+      })
+      .then(() => {
+        console.log('Document updated successfully');
+      }).catch((err) => {
+        console.log('Error', err);
       })
 
   }
   handleDeleteProduct = (id) => {
-      const {products} = this.state;
+      // const {products} = this.state;
 
-      const items = products.filter((item) => item.id !== id);
+      // const items = products.filter((item) => item.id !== id);
 
-      this.setState({
-          products: items
-      })
+      // this.setState({
+      //     products: items
+      // })
+
+    const docRef = this.db.collection('products').doc(id);
+
+    docRef
+    .delete()
+    .then(() => {
+      console.log('Deleted Successfully');
+    })
+    .catch((err) => {
+      console.log('Error', err);
+    })
+
   }
 
   getCartCount =() => {
